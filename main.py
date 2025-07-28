@@ -17,14 +17,14 @@ async def on_ready():
     await tree.sync()
     print(f"✅ Bot is ready as {client.user} and commands are synced!")
 
-# ✅ `/help` command (Lists all commands)
+# `/help` command (Lists all commands)
 @tree.command(name="help", description="Lists all available commands and their usage.")
 async def help_command(interaction: discord.Interaction):
     help_text = (
         "**📖 Bot Command Guide**\n\n"
         "🔹 **/help** → Shows this message.\n"
         "🔹 **/say <message>** → Bot repeats your message.\n"
-        "🔹 **/devbadge** → Links the discord developer page where you can claim the badge.\n"
+        "🔹 **/devbadge** → Links the discord developer page.\n"
         "🔹 **/warn <user> <reason>** → Warns a user.\n"
         "🔹 **/kick <user> <reason>** → Kicks a user (Requires `Kick Members`).\n"
         "🔹 **/ban <user> <reason>** → Bans a user (Requires `Ban Members`).\n"
@@ -37,21 +37,21 @@ async def help_command(interaction: discord.Interaction):
         "� **1-second delay** between messages to avoid rate-limiting\n"
         "� Requires **Manage Messages permission**\n"
         "============================================\n"
-        "made by n26g"
+        "made by me 😪"
     )
     await interaction.response.send_message(help_text)
 
-# ✅ `/devbadge` command 
+# `/devbadge` command 
 @tree.command(name="devbadge", description="Get the Developer Badge")
 async def devbadge(interaction: discord.Interaction):
     await interaction.response.send_message("Check the [Discord Developer Portal](<https://discord.com/developers/active-developer>) to claim")
 
-# ✅ `/warn` command
+# `/warn` command
 @tree.command(name="warn", description="Warns a user")
 async def warn(interaction: discord.Interaction, user: discord.Member, reason: str):
     await interaction.response.send_message(f"⚠️ {user.mention} has been warned for: **{reason}**")
 
-# ✅ `/kick` command
+# `/kick` command
 @tree.command(name="kick", description="Kicks a user")
 async def kick(interaction: discord.Interaction, user: discord.Member, reason: str):
     if interaction.user.guild_permissions.kick_members:
@@ -60,7 +60,7 @@ async def kick(interaction: discord.Interaction, user: discord.Member, reason: s
     else:
         await interaction.response.send_message("❌ You do not have permission to kick members.", ephemeral=True)
 
-# ✅ `/ban` command
+# `/ban` command
 @tree.command(name="ban", description="Bans a user")
 async def ban(interaction: discord.Interaction, user: discord.Member, reason: str):
     if interaction.user.guild_permissions.ban_members:
@@ -69,22 +69,22 @@ async def ban(interaction: discord.Interaction, user: discord.Member, reason: st
     else:
         await interaction.response.send_message("❌ You do not have permission to ban members.", ephemeral=True)
 
-# ✅ `/sping` command (Spam Ping with user, pings per message, and total messages)
+# '/sping` command (Spam Ping with user, pings per message, and total messages)
 @tree.command(name="sping", description="Spam ping a user multiple times with custom message count")
 async def sping(interaction: discord.Interaction, user: discord.Member, pings_per_message: int, messages: int):
     if not interaction.user.guild_permissions.manage_messages:
         await interaction.response.send_message("❌ You do not have permission to use this command.", ephemeral=True)
         return
 
-    # Set limits to prevent abuse
-    max_pings_per_message = 10  # Max 10 mentions per message
-    max_messages = 20  # Max 20 messages
+    # Set limits here
+    max_pings_per_message = 10
+    max_messages = 20
     pings_per_message = min(pings_per_message, max_pings_per_message)
     messages = min(messages, max_messages)
 
     await interaction.response.send_message(f"🚨 Spamming {user.mention} **{pings_per_message} times per message** for **{messages} messages**...")
 
-    ping_text = " ".join([user.mention] * pings_per_message)  # Create message with multiple mentions
+    ping_text = " ".join([user.mention] * pings_per_message)  
 
     for _ in range(messages):
         await interaction.channel.send(ping_text)
